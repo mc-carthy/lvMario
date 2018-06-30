@@ -34,10 +34,11 @@ end
 
 function PlayState:update(dt)
     if love.keyboard.isDown('left') then
-        cameraScroll = cameraScroll - CAMERA_SCROLL_SPEED * dt
+        characterX = characterX - CHARACTER_MOVE_SPEED * dt
     elseif love.keyboard.isDown('right') then
-        cameraScroll = cameraScroll + CAMERA_SCROLL_SPEED * dt
+        characterX = characterX + CHARACTER_MOVE_SPEED * dt
     end
+    cameraScroll = characterX - (VIRTUAL_WIDTH / 2) + (CHARACTER_WIDTH / 2)
 end
 
 function PlayState:draw()
@@ -51,6 +52,6 @@ function PlayState:draw()
                 love.graphics.draw(tilesheet, quads[tile.id], (x - 1) * TILE_SIZE, (y - 1) * TILE_SIZE)
             end
         end
-        love.graphics.draw(characterSheet, characterQuads[1], characterX, characterY)
+        love.graphics.draw(characterSheet, characterQuads[1], math.floor(characterX), math.floor(characterY))
     Push:finish()
 end
