@@ -9,6 +9,12 @@ function love.load()
     }
 
     stateMachine:change('play')
+
+    Push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+        fullscreen = false,
+        resizable = true,
+        vsync = true
+    })
 end
 
 function love.update(dt)
