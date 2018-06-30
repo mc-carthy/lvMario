@@ -5,6 +5,12 @@ function PlayState:init()
     
     tilesheet = love.graphics.newImage('assets/sprites/tiles.png')
     quads = GenerateQuads(tilesheet, TILE_SIZE, TILE_SIZE)
+
+    characterSheet = love.graphics.newImage('assets/sprites/character.png')
+    characterQuads = GenerateQuads(characterSheet, CHARACTER_WIDTH, CHARACTER_HEIGHT)
+
+    characterX = VIRTUAL_WIDTH / 2 - (CHARACTER_WIDTH / 2)
+    characterY = ((7 - 1) * TILE_SIZE) - CHARACTER_HEIGHT
     
     mapWidth = 20
     mapHeight = 20
@@ -20,7 +26,7 @@ function PlayState:init()
         
         for x = 1, mapWidth do
             table.insert(tiles[y], {
-                id = y < 5 and SKY or GROUND
+                id = y < 7 and SKY or GROUND
             })
         end
     end
@@ -45,5 +51,6 @@ function PlayState:draw()
                 love.graphics.draw(tilesheet, quads[tile.id], (x - 1) * TILE_SIZE, (y - 1) * TILE_SIZE)
             end
         end
+        love.graphics.draw(characterSheet, characterQuads[1], characterX, characterY)
     Push:finish()
 end
