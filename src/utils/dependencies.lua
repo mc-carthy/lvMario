@@ -1,0 +1,5 @@
+Class = require('src/utils/class')
+require('src.utils.debug')
+require('src/utils/stateMachine')
+require('src/states/baseState')
+require('src/states/playState')
