@@ -1,5 +1,6 @@
-Push = require('src/utils/push')
 Class = require('src/utils/class')
+Push = require('src/utils/push')
+require('src/utils/animation')
 require('src.utils/debug')
 require('src/utils/constants')
 require('src/utils/utils')

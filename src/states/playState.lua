@@ -12,6 +12,18 @@ function PlayState:init()
     characterX = VIRTUAL_WIDTH / 2 - (CHARACTER_WIDTH / 2)
     characterY = ((7 - 1) * TILE_SIZE) - CHARACTER_HEIGHT
     
+    idleAnimation = Animation {
+        frames = { 1 },
+        interval = 1
+    }
+    movingAnimation = Animation {
+        frames = { 10, 11 },
+        interval = 0.2
+    }
+
+    currentAnimation = idleAnimation
+    direction = 'right'
+
     mapWidth = 20
     mapHeight = 20
 
@@ -33,10 +45,17 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
+    currentAnimation:update(dt)
     if love.keyboard.isDown('left') then
         characterX = characterX - CHARACTER_MOVE_SPEED * dt
+        currentAnimation = movingAnimation
+        direction = 'left'
     elseif love.keyboard.isDown('right') then
         characterX = characterX + CHARACTER_MOVE_SPEED * dt
+        currentAnimation = movingAnimation
+        direction = 'right'
+    else
+        currentAnimation = idleAnimation
     end
     cameraScroll = characterX - (VIRTUAL_WIDTH / 2) + (CHARACTER_WIDTH / 2)
 end
@@ -52,6 +71,14 @@ function PlayState:draw()
                 love.graphics.draw(tilesheet, quads[tile.id], (x - 1) * TILE_SIZE, (y - 1) * TILE_SIZE)
             end
         end
-        love.graphics.draw(characterSheet, characterQuads[1], math.floor(characterX), math.floor(characterY))
+        love.graphics.draw(
+            characterSheet, 
+            characterQuads[currentAnimation:getCurrentFrame()], 
+            math.floor(characterX) + CHARACTER_WIDTH / 2, 
+            math.floor(characterY) + CHARACTER_HEIGHT / 2,
+            0,
+            direction == 'left' and -1 or 1, 
+            1,
+            CHARACTER_WIDTH / 2, CHARACTER_HEIGHT / 2)
     Push:finish()
 end
