@@ -112,7 +112,9 @@ function love.keypressed(key)
         love.event.quit()
     end
     if key == 'space' then
-        characterDY = JUMP_VELOCITY
+        if characterDY == 0 then
+            characterDY = JUMP_VELOCITY
+        end
     end
     if key == 'r' then
         tileset = math.random(#tilesets)
