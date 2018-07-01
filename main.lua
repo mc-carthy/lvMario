@@ -24,12 +24,3 @@ end
 function love.draw()
     stateMachine:draw()
 end
-
-function love.keypressed(key)
-    if key == 'escape' then
-        love.event.quit()
-    end
-    if key == 'space' then
-        characterDY = JUMP_VELOCITY
-    end
-end
