@@ -11,6 +11,7 @@ function PlayState:init()
 
     characterX = VIRTUAL_WIDTH / 2 - (CHARACTER_WIDTH / 2)
     characterY = ((7 - 1) * TILE_SIZE) - CHARACTER_HEIGHT
+    characterDY = 0
     
     idleAnimation = Animation {
         frames = { 1 },
@@ -20,9 +21,13 @@ function PlayState:init()
         frames = { 10, 11 },
         interval = 0.2
     }
+    jumpAnimation = Animation {
+        frames = { 3 },
+        interval = 1
+    }
 
     currentAnimation = idleAnimation
-    direction = 'right'
+    direction = 1
 
     mapWidth = 20
     mapHeight = 20
@@ -45,18 +50,30 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
+    characterDY = characterDY + GRAVITY
+    characterY = characterY + characterDY * dt
+
+    if characterY > ((7 - 1) * TILE_SIZE) - CHARACTER_HEIGHT then
+        characterY = ((7 - 1) * TILE_SIZE) - CHARACTER_HEIGHT
+        characterDY = 0
+    end
+
     currentAnimation:update(dt)
+
+    currentAnimation = idleAnimation
     if love.keyboard.isDown('left') then
         characterX = characterX - CHARACTER_MOVE_SPEED * dt
         currentAnimation = movingAnimation
-        direction = 'left'
+        direction = -1
     elseif love.keyboard.isDown('right') then
         characterX = characterX + CHARACTER_MOVE_SPEED * dt
         currentAnimation = movingAnimation
-        direction = 'right'
-    else
-        currentAnimation = idleAnimation
+        direction = 1
     end
+    if characterDY ~= 0 then
+        currentAnimation = jumpAnimation
+    end
+
     cameraScroll = characterX - (VIRTUAL_WIDTH / 2) + (CHARACTER_WIDTH / 2)
 end
 
@@ -77,7 +94,7 @@ function PlayState:draw()
             math.floor(characterX) + CHARACTER_WIDTH / 2, 
             math.floor(characterY) + CHARACTER_HEIGHT / 2,
             0,
-            direction == 'left' and -1 or 1, 
+            direction, 
             1,
             CHARACTER_WIDTH / 2, CHARACTER_HEIGHT / 2)
     Push:finish()
