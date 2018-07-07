@@ -144,10 +144,10 @@ function generateLevel()
         local spawnPillar = math.random(5) == 1
         
         if spawnPillar then
-            for pillar = 4, 6 do
+            for pillar = 5, 6 do
                 tiles[pillar][x] = {
                     id = GROUND,
-                    topper = pillar == 4 and true or false
+                    topper = pillar == 5 and true or false
                 }
             end
         end
